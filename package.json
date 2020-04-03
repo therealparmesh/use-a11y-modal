@@ -16,7 +16,7 @@
     "types.d.ts"
   ],
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --jsx",
     "prepublishOnly": "npm run build",
     "version": "standard-version"
   },
