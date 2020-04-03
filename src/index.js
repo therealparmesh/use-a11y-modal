@@ -19,7 +19,10 @@ const makeA11yModalPortal = (ref) => ({ children }) => {
   }, []);
 
   return ref.current
-    ? ReactDOM.createPortal(<FocusLock>{children}</FocusLock>, ref.current)
+    ? ReactDOM.createPortal(
+        React.createElement(FocusLock, null, children),
+        ref.current,
+      )
     : null;
 };
 
