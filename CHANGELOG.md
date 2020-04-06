@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.0...v0.1.1) (2020-04-06)
+
+### Bug Fixes
+
+- support close on click outside and escape key for modals on modals ([96af1c4](https://github.com/therealparmesh/use-a11y-modal/commit/96af1c48a307c5b0416981bff79bb6d13837b2ca))
+
 ## [0.1.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.0.3...v0.1.0) (2020-04-06)
 
 ### ⚠ BREAKING CHANGES
