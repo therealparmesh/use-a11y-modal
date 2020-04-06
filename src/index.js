@@ -1,73 +1,141 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import FocusLock from 'react-focus-lock';
+import 'wicg-inert';
 
 const TYPE = 'a11y-modal-portal';
 
-const makeA11yModalPortal = (ref) => ({ children }) => {
-  const [, forceUpdate] = React.useState({});
-
-  React.useLayoutEffect(() => {
-    const node = (ref.current = document.createElement(TYPE));
-
-    document.body.appendChild(node);
-    forceUpdate({});
-
-    return () => {
-      document.body.removeChild(node);
-    };
-  }, []);
-
-  return ref.current
-    ? ReactDOM.createPortal(
-        React.createElement(FocusLock, null, children),
-        ref.current,
-      )
-    : null;
-};
-
-export const useA11yModal = (isOpen) => {
-  const portalRef = React.useRef();
-  const A11yModalPortal = React.useRef(makeA11yModalPortal(portalRef));
+export const useA11yModal = (
+  id,
+  isOpen,
+  onClose = () => {},
+  { disableClickOutside, disableEscapeKey } = {},
+) => {
+  const portalId = `${id}_portal`;
+  const labelId = `${id}_label`;
 
   React.useLayoutEffect(() => {
     if (!isOpen) {
       return;
     }
 
-    const overflow = window.getComputedStyle(document.body).overflow;
+    const activeElement = document.activeElement;
 
+    window.requestAnimationFrame(() => {
+      if (document.querySelector(`#${id}`)) {
+        document.querySelector(`#${id}`).focus();
+      }
+    });
+
+    const overflow = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
+
+    const clickOutsideListener = (e) => {
+      if (
+        document.querySelector(`#${id}`) &&
+        !document.querySelector(`#${id}`).contains(e.target) &&
+        !disableClickOutside
+      ) {
+        onClose(e);
+      }
+    };
+
+    const escapeKeyListener = (e) => {
+      if (e.key === 'Escape' && !disableEscapeKey) {
+        onClose(e);
+      }
+    };
+
+    document.body.addEventListener('mousedown', clickOutsideListener);
+    document.body.addEventListener('touchstart', clickOutsideListener);
+    document.body.addEventListener('keydown', escapeKeyListener);
 
     const hiddenNodes = Array.from(document.querySelectorAll(`body > *`))
       .map((rootNode) => {
-        if (rootNode === portalRef.current) {
-          return undefined;
+        if (
+          rootNode.tagName === TYPE.toUpperCase() &&
+          rootNode.id === portalId
+        ) {
+          return null;
         }
 
         return {
           node: rootNode,
           hidden: rootNode.getAttribute('aria-hidden'),
+          inert: rootNode.getAttribute('inert'),
         };
       })
-      .filter((hiddenNode) => hiddenNode);
+      .filter((hiddenNode) => hiddenNode !== null);
 
     hiddenNodes.forEach((hiddenNode) => {
       hiddenNode.node.setAttribute('aria-hidden', 'true');
+      hiddenNode.node.setAttribute('inert', 'true');
     });
 
     return () => {
       document.body.style.overflow = overflow;
 
+      document.body.removeEventListener('mousedown', clickOutsideListener);
+      document.body.removeEventListener('touchstart', clickOutsideListener);
+      document.body.removeEventListener('keydown', escapeKeyListener);
+
       hiddenNodes.forEach((hiddenNode) => {
-        if (hiddenNode.hidden === null) {
-          hiddenNode.node.removeAttribute('aria-hidden');
-        } else {
-          hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
-        }
+        hiddenNode.hidden === null
+          ? hiddenNode.node.removeAttribute('aria-hidden')
+          : hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
+
+        hiddenNode.inert === null
+          ? hiddenNode.node.removeAttribute('inert')
+          : hiddenNode.node.setAttribute('intert', hiddenNode.inert);
+      });
+
+      window.requestAnimationFrame(() => {
+        activeElement.focus();
       });
     };
-  }, [isOpen]);
+  }, [id, isOpen, portalId, labelId]);
 
-  return A11yModalPortal.current;
+  return React.useMemo(
+    () => [
+      {
+        id: portalId,
+        role: 'region',
+      },
+      {
+        id,
+        role: 'dialog',
+        tabIndex: 0,
+        'aria-labelledby': `${id}_label`,
+        'aria-modal': true,
+      },
+      {
+        id: labelId,
+        role: 'heading',
+      },
+    ],
+    [id, portalId, labelId],
+  );
+};
+
+export const A11yModalPortal = ({ children, id }) => {
+  const portalRef = React.useRef(null);
+  const [, forceUpdate] = React.useState({});
+
+  React.useLayoutEffect(() => {
+    const portalNode = (portalRef.current = document.createElement(TYPE));
+    portalNode.id = id;
+
+    document.body.appendChild(portalNode);
+    forceUpdate({});
+
+    return () => {
+      portalRef.current = null;
+
+      document.body.removeChild(portalNode);
+      forceUpdate({});
+    };
+  }, [id]);
+
+  return portalRef.current
+    ? ReactDOM.createPortal(children, portalRef.current)
+    : null;
 };

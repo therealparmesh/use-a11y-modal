@@ -30,7 +30,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
-    "react-focus-lock": "^2.0.0"
+    "wicg-inert": "^3.0.0"
   },
   "devDependencies": {
     "husky": "^4.0.10",
