@@ -31,6 +31,11 @@ export const useA11yModal = (
 
     const clickOutsideListener = (e) => {
       if (
+        document.querySelector(`#${portalId}`) &&
+        document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
+          'true' &&
+        document.querySelector(`#${portalId}`).getAttribute('inert') !==
+          'true' &&
         document.querySelector(`#${id}`) &&
         !document.querySelector(`#${id}`).contains(e.target) &&
         !disableClickOutside
@@ -40,7 +45,15 @@ export const useA11yModal = (
     };
 
     const escapeKeyListener = (e) => {
-      if (e.key === 'Escape' && !disableEscapeKey) {
+      if (
+        document.querySelector(`#${portalId}`) &&
+        document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
+          'true' &&
+        document.querySelector(`#${portalId}`).getAttribute('inert') !==
+          'true' &&
+        e.key === 'Escape' &&
+        !disableEscapeKey
+      ) {
         onClose(e);
       }
     };
