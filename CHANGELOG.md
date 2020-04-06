@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.0.3...v0.1.0) (2020-04-06)
+
+### ⚠ BREAKING CHANGES
+
+- This package now exports a component and a hook, where the hook returns an array of props objects.
+
+### Features
+
+- update API and use inert attribute ([d5a666f](https://github.com/therealparmesh/use-a11y-modal/commit/d5a666fc10fe8aa4b7dd0a2d8e4af58b07d6141c))
+
 ### [0.0.3](https://github.com/therealparmesh/use-a11y-modal/compare/v0.0.2...v0.0.3) (2020-04-03)
 
 ### Bug Fixes
