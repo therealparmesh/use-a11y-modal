@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.3...v0.1.4) (2020-04-06)
+
+### Bug Fixes
+
+- check for native inert support ([8e6fad0](https://github.com/therealparmesh/use-a11y-modal/commit/8e6fad069d2e64285e398b6d582a893c845aafbb))
+
 ### [0.1.3](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.2...v0.1.3) (2020-04-06)
 
 ### Bug Fixes
