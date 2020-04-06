@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.2...v0.1.3) (2020-04-06)
+
+### Bug Fixes
+
+- account for inert polyfill handling other attributes ([0539725](https://github.com/therealparmesh/use-a11y-modal/commit/05397259c1aa2adb69893b65f0035341078922d0))
+
 ### [0.1.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.1...v0.1.2) (2020-04-06)
 
 ### Bug Fixes
