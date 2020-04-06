@@ -98,7 +98,7 @@ export const useA11yModal = (
 
         hiddenNode.inert === null
           ? hiddenNode.node.removeAttribute('inert')
-          : hiddenNode.node.setAttribute('intert', hiddenNode.inert);
+          : hiddenNode.node.setAttribute('inert', hiddenNode.inert);
       });
 
       window.requestAnimationFrame(() => {
