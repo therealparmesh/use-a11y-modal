@@ -32,9 +32,8 @@ export const useA11yModal = (
     const clickOutsideListener = (e) => {
       if (
         document.querySelector(`#${portalId}`) &&
+        document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
         document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
-          'true' &&
-        document.querySelector(`#${portalId}`).getAttribute('inert') !==
           'true' &&
         document.querySelector(`#${id}`) &&
         !document.querySelector(`#${id}`).contains(e.target) &&
@@ -47,9 +46,8 @@ export const useA11yModal = (
     const escapeKeyListener = (e) => {
       if (
         document.querySelector(`#${portalId}`) &&
+        document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
         document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
-          'true' &&
-        document.querySelector(`#${portalId}`).getAttribute('inert') !==
           'true' &&
         e.key === 'Escape' &&
         !disableEscapeKey
@@ -73,33 +71,42 @@ export const useA11yModal = (
 
         return {
           node: rootNode,
-          hidden: rootNode.getAttribute('aria-hidden'),
           inert: rootNode.getAttribute('inert'),
+          hidden: rootNode.getAttribute('aria-hidden'),
         };
       })
       .filter((hiddenNode) => hiddenNode !== null);
 
     hiddenNodes.forEach((hiddenNode) => {
-      hiddenNode.node.setAttribute('aria-hidden', 'true');
-      hiddenNode.node.setAttribute('inert', 'true');
+      hiddenNode.node.setAttribute('inert', '');
+    });
+
+    window.requestAnimationFrame(() => {
+      hiddenNodes.forEach((hiddenNode) => {
+        hiddenNode.node.setAttribute('aria-hidden', 'true');
+      });
     });
 
     return () => {
-      document.body.style.overflow = overflow;
+      hiddenNodes.forEach((hiddenNode) => {
+        hiddenNode.inert === null
+          ? hiddenNode.node.removeAttribute('inert')
+          : hiddenNode.node.setAttribute('inert', hiddenNode.inert);
+      });
+
+      window.requestAnimationFrame(() => {
+        hiddenNodes.forEach((hiddenNode) => {
+          hiddenNode.hidden === null
+            ? hiddenNode.node.removeAttribute('aria-hidden')
+            : hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
+        });
+      });
 
       document.body.removeEventListener('mousedown', clickOutsideListener);
       document.body.removeEventListener('touchstart', clickOutsideListener);
       document.body.removeEventListener('keydown', escapeKeyListener);
 
-      hiddenNodes.forEach((hiddenNode) => {
-        hiddenNode.hidden === null
-          ? hiddenNode.node.removeAttribute('aria-hidden')
-          : hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
-
-        hiddenNode.inert === null
-          ? hiddenNode.node.removeAttribute('inert')
-          : hiddenNode.node.setAttribute('inert', hiddenNode.inert);
-      });
+      document.body.style.overflow = overflow;
 
       window.requestAnimationFrame(() => {
         activeElement.focus();
