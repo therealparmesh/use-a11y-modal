@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'wicg-inert';
+
+const nativeInert = Element.prototype.hasOwnProperty('inert');
+
+if (!nativeInert) {
+  require('wicg-inert');
+}
 
 const TYPE = 'a11y-modal-portal';
 
@@ -33,8 +38,6 @@ export const useA11yModal = (
       if (
         document.querySelector(`#${portalId}`) &&
         document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
-        document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
-          'true' &&
         document.querySelector(`#${id}`) &&
         !document.querySelector(`#${id}`).contains(e.target) &&
         !disableClickOutside
@@ -47,8 +50,6 @@ export const useA11yModal = (
       if (
         document.querySelector(`#${portalId}`) &&
         document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
-        document.querySelector(`#${portalId}`).getAttribute('aria-hidden') !==
-          'true' &&
         e.key === 'Escape' &&
         !disableEscapeKey
       ) {
@@ -72,19 +73,19 @@ export const useA11yModal = (
         return {
           node: rootNode,
           inert: rootNode.getAttribute('inert'),
-          hidden: rootNode.getAttribute('aria-hidden'),
+          hidden: nativeInert ? rootNode.getAttribute('aria-hidden') : null,
         };
       })
       .filter((hiddenNode) => hiddenNode !== null);
 
     hiddenNodes.forEach((hiddenNode) => {
       hiddenNode.node.setAttribute('inert', '');
-    });
 
-    window.requestAnimationFrame(() => {
-      hiddenNodes.forEach((hiddenNode) => {
-        hiddenNode.node.setAttribute('aria-hidden', 'true');
-      });
+      if (nativeInert) {
+        hiddenNodes.forEach((hiddenNode) => {
+          hiddenNode.node.setAttribute('aria-hidden', 'true');
+        });
+      }
     });
 
     return () => {
@@ -92,14 +93,12 @@ export const useA11yModal = (
         hiddenNode.inert === null
           ? hiddenNode.node.removeAttribute('inert')
           : hiddenNode.node.setAttribute('inert', hiddenNode.inert);
-      });
 
-      window.requestAnimationFrame(() => {
-        hiddenNodes.forEach((hiddenNode) => {
+        if (nativeInert) {
           hiddenNode.hidden === null
             ? hiddenNode.node.removeAttribute('aria-hidden')
             : hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
-        });
+        }
       });
 
       document.body.removeEventListener('mousedown', clickOutsideListener);
