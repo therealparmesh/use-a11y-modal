@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.5...v0.1.6) (2020-04-10)
+
+### Bug Fixes
+
+- add missing role prop to portal component type ([ab11659](https://github.com/therealparmesh/use-a11y-modal/commit/ab11659edeaae068f7a9bbae225225fc0ea8c51b))
+
 ### [0.1.5](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.4...v0.1.5) (2020-04-10)
 
 ### Bug Fixes
