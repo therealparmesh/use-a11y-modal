@@ -27,4 +27,5 @@ export const useA11yModal: (
 export const A11yModalPortal: React.FC<{
   children: ReactNode;
   id: React.HTMLAttributes<Element>['id'];
+  role: React.HTMLAttributes<Element>['role'];
 }>;
