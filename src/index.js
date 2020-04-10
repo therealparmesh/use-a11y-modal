@@ -135,14 +135,15 @@ export const useA11yModal = (
   );
 };
 
-export const A11yModalPortal = ({ children, id }) => {
+export const A11yModalPortal = ({ children, id, role }) => {
   const portalRef = React.useRef(null);
   const [, forceUpdate] = React.useState({});
 
   React.useLayoutEffect(() => {
     const portalNode = (portalRef.current = document.createElement(TYPE));
-    portalNode.id = id;
 
+    portalNode.setAttribute('id', id);
+    portalNode.setAttribute('role', role);
     document.body.appendChild(portalNode);
     forceUpdate({});
 
@@ -152,7 +153,7 @@ export const A11yModalPortal = ({ children, id }) => {
       document.body.removeChild(portalNode);
       forceUpdate({});
     };
-  }, [id]);
+  }, [id, role]);
 
   return portalRef.current
     ? ReactDOM.createPortal(children, portalRef.current)
