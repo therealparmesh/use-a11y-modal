@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.4...v0.1.5) (2020-04-10)
+
+### Bug Fixes
+
+- set role attribute on portal node correctly ([d3194b4](https://github.com/therealparmesh/use-a11y-modal/commit/d3194b44aba7d4008671f6b0f1fcef2911e6b235))
+
 ### [0.1.4](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.3...v0.1.4) (2020-04-06)
 
 ### Bug Fixes
