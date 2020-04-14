@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.4...v0.2.5) (2020-04-14)
+
+### Bug Fixes
+
+- set modal tabIndex prop to -1 ([555fb7c](https://github.com/therealparmesh/use-a11y-modal/commit/555fb7cc8f1c662a4d71f399e4c312409ba8fbaa))
+
 ### [0.2.4](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.3...v0.2.4) (2020-04-14)
 
 ### Bug Fixes
