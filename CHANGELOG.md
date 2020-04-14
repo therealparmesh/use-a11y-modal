@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.3.0...v0.4.0) (2020-04-14)
+
+### ⚠ BREAKING CHANGES
+
+- The hook now requires the user to control the open state.
+
+### Features
+
+- update API and refactor for controlled state ([5dee7e5](https://github.com/therealparmesh/use-a11y-modal/commit/5dee7e55ad65c5374d8b513dfc539e3cd3df47f0))
+
 ## [0.3.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.7...v0.3.0) (2020-04-14)
 
 ### ⚠ BREAKING CHANGES
