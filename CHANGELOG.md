@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.5...v0.2.6) (2020-04-14)
+
+### Bug Fixes
+
+- use React.ReactNode type correctly ([8208ade](https://github.com/therealparmesh/use-a11y-modal/commit/8208adeaff69056abb15e5c79ee78fcf8f8ad511))
+
 ### [0.2.5](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.4...v0.2.5) (2020-04-14)
 
 ### Bug Fixes
