@@ -30,7 +30,7 @@ export const useA11yModal: (options: {
 };
 
 export const A11yModalPortal: React.FC<{
-  children: ReactNode;
+  children: React.ReactNode;
   id: React.HTMLAttributes<Element>['id'];
   role: React.HTMLAttributes<Element>['role'];
 }>;
