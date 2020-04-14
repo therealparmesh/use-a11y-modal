@@ -153,7 +153,7 @@ export const useA11yModal = ({
 
       document.body.style.overflow = overflow;
 
-      if (autoFocus) {
+      if (activeElement) {
         window.requestAnimationFrame(() => {
           activeElement.focus();
         });
