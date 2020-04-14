@@ -1,15 +1,10 @@
 export const useA11yModal: (options: {
   id: React.HTMLAttributes<Element>['id'];
-  autoFocus?: boolean;
-  clickOutside?: boolean;
-  escapeKeyPress?: boolean;
-  initialIsOpen?: boolean;
-  isOpen?: boolean;
-  onDismiss?: (e: MouseEvent | TouchEvent | KeyboardEvent) => void;
-}) => {
   isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
+  autoFocus?: boolean;
+  onClickOutside?: (e: MouseEvent | TouchEvent) => void;
+  onEscapeKeyPress?: (e: KeyboardEvent) => void;
+}) => {
   portalProps: {
     id: React.HTMLAttributes<Element>['id'];
     role: React.HTMLAttributes<Element>['role'];
