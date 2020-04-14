@@ -3,6 +3,7 @@ export const useA11yModal: (options: {
   autoFocus?: boolean;
   clickOutside?: boolean;
   escapeKeyPress?: boolean;
+  initialIsOpen?: boolean;
   isOpen?: boolean;
   onClickOutside?: (e: MouseEvent | TouchEvent) => void;
   onEscapeKeyPress?: (e: KeyboardEvent) => void;
