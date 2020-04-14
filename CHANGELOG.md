@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.7...v0.3.0) (2020-04-14)
+
+### ⚠ BREAKING CHANGES
+
+- The hook now takes a dismiss callback as an option instead of several similar callbacks.
+
+### Features
+
+- update API and unify click outside and escape key callbacks ([6dde05e](https://github.com/therealparmesh/use-a11y-modal/commit/6dde05e6944deb5bfb57355f34be8b60353e8ae2))
+
 ### [0.2.7](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.6...v0.2.7) (2020-04-14)
 
 ### Bug Fixes
