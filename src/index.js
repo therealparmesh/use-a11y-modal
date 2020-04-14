@@ -173,7 +173,7 @@ export const useA11yModal = ({
       modalProps: {
         id,
         role: 'dialog',
-        tabIndex: 0,
+        tabIndex: -1,
         'aria-labelledby': labelId,
         'aria-modal': true,
       },
