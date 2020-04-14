@@ -52,8 +52,8 @@ export const useA11yModal = ({
 
     const activeElement = document.activeElement;
 
-    window.requestAnimationFrame(() => {
-      if (autoFocus) {
+    if (autoFocus) {
+      window.requestAnimationFrame(() => {
         const focusElement =
           document.querySelector(`
             #${id} input:not([tabindex="-1"]):not([disabled]):not([readonly]), 
@@ -72,8 +72,8 @@ export const useA11yModal = ({
         if (focusElement) {
           focusElement.focus();
         }
-      }
-    });
+      });
+    }
 
     const overflow = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
@@ -153,9 +153,11 @@ export const useA11yModal = ({
 
       document.body.style.overflow = overflow;
 
-      window.requestAnimationFrame(() => {
-        activeElement.focus();
-      });
+      if (autoFocus) {
+        window.requestAnimationFrame(() => {
+          activeElement.focus();
+        });
+      }
     };
   }, [id, autoFocus, clickOutside, escapeKeyPress, isOpen]);
 
