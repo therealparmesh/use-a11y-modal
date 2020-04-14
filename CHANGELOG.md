@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.0...v0.2.1) (2020-04-14)
+
+### Bug Fixes
+
+- broken types ([9f78e50](https://github.com/therealparmesh/use-a11y-modal/commit/9f78e5018a1a2fa1ecbc68b3c7727dba5cb9a763))
+
 ## [0.2.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.1.6...v0.2.0) (2020-04-13)
 
 ### ⚠ BREAKING CHANGES
