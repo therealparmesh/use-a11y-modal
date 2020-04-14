@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.1...v0.2.2) (2020-04-14)
+
+### Bug Fixes
+
+- update auto focus query ([f7111d0](https://github.com/therealparmesh/use-a11y-modal/commit/f7111d06c8813f66d2709e18c60ad465990089f9))
+
 ### [0.2.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.0...v0.2.1) (2020-04-14)
 
 ### Bug Fixes
