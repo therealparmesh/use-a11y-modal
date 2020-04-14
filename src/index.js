@@ -56,12 +56,17 @@ export const useA11yModal = ({
       if (autoFocus) {
         const focusElement =
           document.querySelector(`
-            #${id} input:not([tabindex="-1"]):not([disabled]), 
-            #${id} textarea:not([tabindex="-1"]):not([disabled]), 
-            #${id} select:not([tabindex="-1"]):not([disabled]), 
-            #${id} button:not([tabindex="-1"]):not([disabled]), 
-            #${id} [href]:not([tabindex="-1"]):not([disabled]), 
-            #${id} [tabindex]:not([tabindex="-1"]):not([disabled])
+            #${id} input:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} textarea:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} select:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} button:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} iframe:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} object:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} embed:not([tabindex="-1"]):not([disabled]):not([readonly])
+            #${id} [tabindex]:not([tabindex="-1"]):not([disabled]):not([readonly])
+            #${id} [href]:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} [contenteditable]:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} [autofocus]:not([tabindex="-1"]):not([disabled]):not([readonly])
           `) || document.querySelector(`#${id}`);
 
         if (focusElement) {
