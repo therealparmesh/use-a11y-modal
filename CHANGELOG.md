@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.2...v0.2.3) (2020-04-14)
+
+### Bug Fixes
+
+- add missing initialIsOpen prop to hook type ([a714783](https://github.com/therealparmesh/use-a11y-modal/commit/a714783a431a7a8628fadd2b21182dd64777e077))
+
 ### [0.2.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.1...v0.2.2) (2020-04-14)
 
 ### Bug Fixes
