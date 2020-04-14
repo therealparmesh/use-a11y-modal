@@ -16,31 +16,19 @@ export const useA11yModal = ({
   escapeKeyPress = true,
   initialIsOpen = false,
   isOpen: givenIsOpen,
-  onClickOutside = () => {},
-  onEscapeKeyPress = () => {},
-  setIsOpen: givenSetIsOpen,
+  onDismiss = () => {},
 }) => {
-  const isControlled = React.useRef(
-    !(givenIsOpen === undefined || givenSetIsOpen === undefined),
-  );
-
-  const [isOpen, setIsOpen] = React.useState(
-    isControlled.current ? givenIsOpen : initialIsOpen,
-  );
-
-  React.useEffect(() => {
-    if (isControlled.current && givenIsOpen !== isOpen) {
-      setIsOpen(givenIsOpen);
-    }
-  }, [givenIsOpen, isOpen]);
+  const [isModalOpen, setIsModalOpen] = React.useState(initialIsOpen);
+  const isControlled = React.useRef(givenIsOpen !== undefined);
+  const isOpen = isControlled.current ? givenIsOpen : isModalOpen;
 
   const openModal = React.useCallback(() => {
-    isControlled.current ? givenSetIsOpen(true) : setIsOpen(true);
-  }, [givenSetIsOpen]);
+    setIsModalOpen(true);
+  }, []);
 
   const closeModal = React.useCallback(() => {
-    isControlled.current ? givenSetIsOpen(false) : setIsOpen(false);
-  }, [givenSetIsOpen]);
+    setIsModalOpen(false);
+  }, []);
 
   const portalId = `${id}_portal`;
   const labelId = `${id}_label`;
@@ -83,10 +71,9 @@ export const useA11yModal = ({
         document.querySelector(`#${portalId}`) &&
         document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
         document.querySelector(`#${id}`) &&
-        !document.querySelector(`#${id}`).contains(e.target) &&
-        clickOutside
+        !document.querySelector(`#${id}`).contains(e.target)
       ) {
-        onClickOutside(e);
+        onDismiss(e);
         closeModal();
       }
     };
@@ -95,10 +82,9 @@ export const useA11yModal = ({
       if (
         document.querySelector(`#${portalId}`) &&
         document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
-        e.key === 'Escape' &&
-        escapeKeyPress
+        e.key === 'Escape'
       ) {
-        onEscapeKeyPress(e);
+        onDismiss(e);
         closeModal();
       }
     };
@@ -159,7 +145,15 @@ export const useA11yModal = ({
         });
       }
     };
-  }, [id, autoFocus, clickOutside, escapeKeyPress, isOpen]);
+  }, [
+    id,
+    autoFocus,
+    clickOutside,
+    escapeKeyPress,
+    isOpen,
+    closeModal,
+    portalId,
+  ]);
 
   return React.useMemo(
     () => ({
@@ -182,7 +176,7 @@ export const useA11yModal = ({
         role: 'heading',
       },
     }),
-    [id, isOpen],
+    [id, isOpen, openModal, closeModal, portalId, labelId],
   );
 };
 
@@ -190,7 +184,7 @@ export const A11yModalPortal = ({ children, id, role }) => {
   const portalRef = React.useRef(null);
   const [, forceUpdate] = React.useState({});
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const portalNode = (portalRef.current = document.createElement(TYPE));
 
     portalNode.setAttribute('id', id);

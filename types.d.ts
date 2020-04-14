@@ -5,9 +5,7 @@ export const useA11yModal: (options: {
   escapeKeyPress?: boolean;
   initialIsOpen?: boolean;
   isOpen?: boolean;
-  onClickOutside?: (e: MouseEvent | TouchEvent) => void;
-  onEscapeKeyPress?: (e: KeyboardEvent) => void;
-  setIsOpen?: (value: boolean) => void;
+  onDismiss?: (e: MouseEvent | TouchEvent | KeyboardEvent) => void;
 }) => {
   isOpen: boolean;
   openModal: () => void;
