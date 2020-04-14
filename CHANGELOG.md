@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.7](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.6...v0.2.7) (2020-04-14)
+
+### Bug Fixes
+
+- change autoFocus prop to not control focus restore ([3e5f407](https://github.com/therealparmesh/use-a11y-modal/commit/3e5f4072054aa1504d0d0a2b05e202d0c94624f2))
+
 ### [0.2.6](https://github.com/therealparmesh/use-a11y-modal/compare/v0.2.5...v0.2.6) (2020-04-14)
 
 ### Bug Fixes
