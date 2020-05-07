@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.4.1...v0.4.2) (2020-05-07)
+
+### Bug Fixes
+
+- extra loop through hidden nodes ([d58473e](https://github.com/therealparmesh/use-a11y-modal/commit/d58473e3c54b68489fb1293e51d57872d7ab77d3))
+
 ### [0.4.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.4.0...v0.4.1) (2020-04-27)
 
 ## [0.4.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.3.0...v0.4.0) (2020-04-14)
