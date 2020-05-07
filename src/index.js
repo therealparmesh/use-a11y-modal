@@ -98,9 +98,7 @@ export const useA11yModal = ({
       hiddenNode.node.setAttribute('inert', '');
 
       if (nativeInert) {
-        hiddenNodes.forEach((hiddenNode) => {
-          hiddenNode.node.setAttribute('aria-hidden', 'true');
-        });
+        hiddenNode.node.setAttribute('aria-hidden', 'true');
       }
     });
 
