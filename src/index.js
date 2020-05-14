@@ -153,7 +153,7 @@ export const useA11yModal = ({
 
   return React.useMemo(
     () => ({
-      createModalPortal: (children) =>
+      createPortal: (children) =>
         portalRef.current
           ? ReactDOM.createPortal(children, portalRef.current)
           : null,

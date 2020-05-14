@@ -5,7 +5,7 @@ export const useA11yModal: (options: {
   onClickOutside?: (e: MouseEvent | TouchEvent) => void;
   onEscapeKeyPress?: (e: KeyboardEvent) => void;
 }) => {
-  createModalPortal: (children: React.ReactNode) => React.ReactPortal;
+  createPortal: (children: React.ReactNode) => React.ReactPortal | null;
   modalProps: {
     id: React.HTMLAttributes<Element>['id'];
     role: React.HTMLAttributes<Element>['role'];
