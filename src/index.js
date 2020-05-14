@@ -16,8 +16,26 @@ export const useA11yModal = ({
   onClickOutside = () => {},
   onEscapeKeyPress = () => {},
 }) => {
-  const portalId = `${id}_portal`;
   const labelId = `${id}_label`;
+  const portalId = `${id}_portal`;
+  const portalRef = React.useRef(null);
+  const [, forceUpdate] = React.useState({});
+
+  React.useEffect(() => {
+    const portalNode = (portalRef.current = document.createElement(TYPE));
+
+    portalNode.setAttribute('id', portalId);
+    portalNode.setAttribute('role', 'region');
+    document.body.appendChild(portalNode);
+    forceUpdate({});
+
+    return () => {
+      portalRef.current = null;
+
+      document.body.removeChild(portalNode);
+      forceUpdate({});
+    };
+  }, [id]);
 
   React.useEffect(() => {
     if (!isOpen) {
@@ -131,10 +149,10 @@ export const useA11yModal = ({
 
   return React.useMemo(
     () => ({
-      portalProps: {
-        id: portalId,
-        role: 'region',
-      },
+      createModalPortal: (children) =>
+        portalRef.current
+          ? ReactDOM.createPortal(children, portalRef.current)
+          : null,
       modalProps: {
         id,
         role: 'dialog',
@@ -145,33 +163,9 @@ export const useA11yModal = ({
       titleProps: {
         id: labelId,
         role: 'heading',
+        tabIndex: -1,
       },
     }),
-    [id, isOpen],
+    [id],
   );
-};
-
-export const A11yModalPortal = ({ children, id, role }) => {
-  const portalRef = React.useRef(null);
-  const [, forceUpdate] = React.useState({});
-
-  React.useEffect(() => {
-    const portalNode = (portalRef.current = document.createElement(TYPE));
-
-    portalNode.setAttribute('id', id);
-    portalNode.setAttribute('role', role);
-    document.body.appendChild(portalNode);
-    forceUpdate({});
-
-    return () => {
-      portalRef.current = null;
-
-      document.body.removeChild(portalNode);
-      forceUpdate({});
-    };
-  }, [id, role]);
-
-  return portalRef.current
-    ? ReactDOM.createPortal(children, portalRef.current)
-    : null;
 };

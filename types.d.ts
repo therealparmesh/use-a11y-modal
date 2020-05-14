@@ -5,10 +5,7 @@ export const useA11yModal: (options: {
   onClickOutside?: (e: MouseEvent | TouchEvent) => void;
   onEscapeKeyPress?: (e: KeyboardEvent) => void;
 }) => {
-  portalProps: {
-    id: React.HTMLAttributes<Element>['id'];
-    role: React.HTMLAttributes<Element>['role'];
-  };
+  createModalPortal: (children: React.ReactNode) => React.ReactPortal;
   modalProps: {
     id: React.HTMLAttributes<Element>['id'];
     role: React.HTMLAttributes<Element>['role'];
@@ -19,11 +16,6 @@ export const useA11yModal: (options: {
   titleProps: {
     id: React.HTMLAttributes<Element>['id'];
     role: React.HTMLAttributes<Element>['role'];
+    tabIndex: React.HTMLAttributes<Element>['tabIndex'];
   };
 };
-
-export const A11yModalPortal: React.FC<{
-  children: React.ReactNode;
-  id: React.HTMLAttributes<Element>['id'];
-  role: React.HTMLAttributes<Element>['role'];
-}>;
