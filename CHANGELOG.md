@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.5.0...v0.5.1) (2020-05-14)
+
+### Bug Fixes
+
+- multiple modal portals ([96de22b](https://github.com/therealparmesh/use-a11y-modal/commit/96de22b9603919a9fe6beb4ac0d6d91002a3d36a))
+
 ## [0.5.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.4.2...v0.5.0) (2020-05-14)
 
 ### ⚠ BREAKING CHANGES
