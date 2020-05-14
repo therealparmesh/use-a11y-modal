@@ -143,11 +143,11 @@ export const useA11yModal = ({
 
       document.body.style.overflow = overflow;
 
-      if (activeElement) {
-        window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (activeElement) {
           activeElement.focus();
-        });
-      }
+        }
+      });
     };
   }, [id, isOpen, autoFocus]);
 
