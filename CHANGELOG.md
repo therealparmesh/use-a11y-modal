@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.5.2...v0.6.0) (2020-05-14)
+
+### ⚠ BREAKING CHANGES
+
+- The hook now returns a modal creator function named createPortal instead of createModalPortal.
+
+### Features
+
+- update API and rename modal creator function ([eb1fb42](https://github.com/therealparmesh/use-a11y-modal/commit/eb1fb4261616ec10c71cfc865877ab105bf72751))
+
 ### [0.5.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.5.1...v0.5.2) (2020-05-14)
 
 ### Bug Fixes
