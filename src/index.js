@@ -22,6 +22,10 @@ export const useA11yModal = ({
   const [, forceUpdate] = React.useState({});
 
   React.useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     const portalNode = (portalRef.current = document.createElement(TYPE));
 
     portalNode.setAttribute('id', portalId);
@@ -35,7 +39,7 @@ export const useA11yModal = ({
       document.body.removeChild(portalNode);
       forceUpdate({});
     };
-  }, [id]);
+  }, [id, isOpen]);
 
   React.useEffect(() => {
     if (!isOpen) {
