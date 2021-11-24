@@ -1,10 +1,10 @@
-export const useA11yModal: (options: {
+export function useA11yModal(options: {
   id: React.HTMLAttributes<Element>['id'];
   isOpen: boolean;
   autoFocus?: boolean;
   onClickOutside?: (e: MouseEvent | TouchEvent) => void;
   onEscapeKeyPress?: (e: KeyboardEvent) => void;
-}) => {
+}): {
   createPortal: (children: React.ReactNode) => React.ReactPortal | null;
   modalProps: {
     id: React.HTMLAttributes<Element>['id'];
