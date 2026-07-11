@@ -1,21 +1,27 @@
-export function useA11yModal(options: {
-  id: React.HTMLAttributes<Element>['id'];
+import type { ReactNode, ReactPortal } from "react";
+
+export interface UseA11yModalOptions {
+  id: string;
   isOpen: boolean;
   autoFocus?: boolean;
   onClickOutside?: (e: MouseEvent | TouchEvent) => void;
   onEscapeKeyPress?: (e: KeyboardEvent) => void;
-}): {
-  createPortal: (children: React.ReactNode) => React.ReactPortal | null;
+}
+
+export interface UseA11yModalResult {
+  createPortal: (children: ReactNode) => ReactPortal | null;
   modalProps: {
-    id: React.HTMLAttributes<Element>['id'];
-    role: React.HTMLAttributes<Element>['role'];
-    tabIndex: React.HTMLAttributes<Element>['tabIndex'];
-    'aria-labelledby': React.HTMLAttributes<Element>['aria-labelledby'];
-    'aria-modal': React.HTMLAttributes<Element>['aria-modal'];
+    id: string;
+    role: "dialog";
+    tabIndex: -1;
+    "aria-labelledby": string;
+    "aria-modal": true;
   };
   titleProps: {
-    id: React.HTMLAttributes<Element>['id'];
-    role: React.HTMLAttributes<Element>['role'];
-    tabIndex: React.HTMLAttributes<Element>['tabIndex'];
+    id: string;
+    role: "heading";
+    tabIndex: -1;
   };
-};
+}
+
+export function useA11yModal(options: UseA11yModalOptions): UseA11yModalResult;

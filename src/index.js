@@ -1,172 +1,196 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import { createPortal as createReactPortal } from "react-dom";
 
-const nativeInert = Element.prototype.hasOwnProperty('inert');
+const TYPE = "a11y-modal-portal";
+const NOOP = () => {};
+const hiddenNodeStates = new WeakMap();
+let bodyLockCount = 0;
+let bodyOverflow;
 
-if (!nativeInert) {
-  require('wicg-inert');
-}
+const hideNode = (node) => {
+  const existingState = hiddenNodeStates.get(node);
 
-const TYPE = 'a11y-modal-portal';
+  if (existingState) {
+    existingState.count += 1;
+    return;
+  }
+
+  hiddenNodeStates.set(node, {
+    count: 1,
+    inert: node.getAttribute("inert"),
+    hidden: node.getAttribute("aria-hidden"),
+  });
+
+  node.setAttribute("inert", "");
+  node.setAttribute("aria-hidden", "true");
+};
+
+const showNode = (node) => {
+  const state = hiddenNodeStates.get(node);
+  if (!state) return;
+
+  state.count -= 1;
+  if (state.count > 0) return;
+
+  state.inert === null ? node.removeAttribute("inert") : node.setAttribute("inert", state.inert);
+
+  state.hidden === null
+    ? node.removeAttribute("aria-hidden")
+    : node.setAttribute("aria-hidden", state.hidden);
+
+  hiddenNodeStates.delete(node);
+};
+
+const lockBody = () => {
+  if (bodyLockCount === 0) {
+    bodyOverflow = window.getComputedStyle(document.body).overflow;
+  }
+  bodyLockCount += 1;
+  document.body.style.overflow = "hidden";
+};
+
+const unlockBody = () => {
+  bodyLockCount -= 1;
+  if (bodyLockCount === 0) document.body.style.overflow = bodyOverflow;
+};
 
 export const useA11yModal = ({
   id,
   isOpen,
   autoFocus = true,
-  onClickOutside = () => {},
-  onEscapeKeyPress = () => {},
+  onClickOutside = NOOP,
+  onEscapeKeyPress = NOOP,
 }) => {
   const labelId = `${id}_label`;
   const portalId = `${id}_portal`;
   const portalRef = React.useRef(null);
+  const restoreFocusFrame = React.useRef(null);
   const [, forceUpdate] = React.useState({});
 
   React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
+    if (!isOpen) return;
 
     const portalNode = (portalRef.current = document.createElement(TYPE));
 
-    portalNode.setAttribute('id', portalId);
-    portalNode.setAttribute('role', 'region');
+    portalNode.setAttribute("id", portalId);
+    portalNode.setAttribute("role", "region");
     document.body.appendChild(portalNode);
     forceUpdate({});
 
     return () => {
       portalRef.current = null;
-
-      document.body.removeChild(portalNode);
+      portalNode.remove();
       forceUpdate({});
     };
   }, [id, isOpen]);
 
   React.useEffect(() => {
-    if (!isOpen) {
-      return;
+    if (!isOpen) return;
+
+    if (restoreFocusFrame.current !== null) {
+      window.cancelAnimationFrame(restoreFocusFrame.current);
+      restoreFocusFrame.current = null;
     }
 
     const activeElement = document.activeElement;
+    let focusFrame = null;
 
     if (autoFocus) {
-      window.requestAnimationFrame(() => {
+      focusFrame = window.requestAnimationFrame(() => {
         const focusElement =
           document.querySelector(`
-            #${id} input:not([tabindex="-1"]):not([disabled]):not([readonly]), 
-            #${id} textarea:not([tabindex="-1"]):not([disabled]):not([readonly]), 
-            #${id} select:not([tabindex="-1"]):not([disabled]):not([readonly]), 
-            #${id} button:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} input:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} textarea:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} select:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} button:not([tabindex="-1"]):not([disabled]):not([readonly]),
             #${id} iframe:not([tabindex="-1"]):not([disabled]):not([readonly]),
             #${id} object:not([tabindex="-1"]):not([disabled]):not([readonly]),
-            #${id} embed:not([tabindex="-1"]):not([disabled]):not([readonly])
-            #${id} [tabindex]:not([tabindex="-1"]):not([disabled]):not([readonly])
-            #${id} [href]:not([tabindex="-1"]):not([disabled]):not([readonly]), 
+            #${id} embed:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} [tabindex]:not([tabindex="-1"]):not([disabled]):not([readonly]),
+            #${id} [href]:not([tabindex="-1"]):not([disabled]):not([readonly]),
             #${id} [contenteditable]:not([tabindex="-1"]):not([disabled]):not([readonly]),
             #${id} [autofocus]:not([tabindex="-1"]):not([disabled]):not([readonly])
           `) || document.querySelector(`#${id}`);
 
-        if (focusElement) {
-          focusElement.focus();
-        }
+        if (focusElement) focusElement.focus();
       });
     }
 
-    const overflow = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
+    lockBody();
 
-    const clickOutsideListener = (e) => {
+    const clickOutsideListener = (event) => {
+      const portalNode = document.querySelector(`#${portalId}`);
+      const modalNode = document.querySelector(`#${id}`);
+
       if (
-        document.querySelector(`#${portalId}`) &&
-        document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
-        document.querySelector(`#${id}`) &&
-        !document.querySelector(`#${id}`).contains(e.target)
+        portalNode &&
+        portalNode.getAttribute("inert") !== "" &&
+        modalNode &&
+        !modalNode.contains(event.target)
       ) {
-        onClickOutside(e);
+        onClickOutside(event);
       }
     };
 
-    const escapeKeyPressListener = (e) => {
-      if (
-        document.querySelector(`#${portalId}`) &&
-        document.querySelector(`#${portalId}`).getAttribute('inert') !== '' &&
-        e.key === 'Escape'
-      ) {
-        onEscapeKeyPress(e);
+    const escapeKeyPressListener = (event) => {
+      const portalNode = document.querySelector(`#${portalId}`);
+
+      if (portalNode && portalNode.getAttribute("inert") !== "" && event.key === "Escape") {
+        onEscapeKeyPress(event);
       }
     };
 
-    document.body.addEventListener('mousedown', clickOutsideListener);
-    document.body.addEventListener('touchstart', clickOutsideListener);
-    document.body.addEventListener('keydown', escapeKeyPressListener);
+    document.body.addEventListener("mousedown", clickOutsideListener);
+    document.body.addEventListener("touchstart", clickOutsideListener);
+    document.body.addEventListener("keydown", escapeKeyPressListener);
 
-    const hiddenNodes = Array.from(document.querySelectorAll(`body > *`))
-      .map((rootNode) => {
-        if (
-          rootNode.tagName === TYPE.toUpperCase() &&
-          rootNode.getAttribute('id') === portalId
-        ) {
-          return null;
-        }
+    const hiddenNodes = Array.from(document.querySelectorAll("body > *")).filter(
+      (rootNode) =>
+        rootNode.tagName !== TYPE.toUpperCase() || rootNode.getAttribute("id") !== portalId,
+    );
 
-        return {
-          node: rootNode,
-          inert: rootNode.getAttribute('inert'),
-          hidden: nativeInert ? rootNode.getAttribute('aria-hidden') : null,
-        };
-      })
-      .filter((hiddenNode) => hiddenNode !== null);
-
-    hiddenNodes.forEach((hiddenNode) => {
-      hiddenNode.node.setAttribute('inert', '');
-
-      if (nativeInert) {
-        hiddenNode.node.setAttribute('aria-hidden', 'true');
-      }
-    });
+    hiddenNodes.forEach(hideNode);
 
     return () => {
-      hiddenNodes.forEach((hiddenNode) => {
-        hiddenNode.inert === null
-          ? hiddenNode.node.removeAttribute('inert')
-          : hiddenNode.node.setAttribute('inert', hiddenNode.inert);
+      if (focusFrame !== null) window.cancelAnimationFrame(focusFrame);
+      hiddenNodes.forEach(showNode);
 
-        if (nativeInert) {
-          hiddenNode.hidden === null
-            ? hiddenNode.node.removeAttribute('aria-hidden')
-            : hiddenNode.node.setAttribute('aria-hidden', hiddenNode.hidden);
-        }
-      });
+      document.body.removeEventListener("mousedown", clickOutsideListener);
+      document.body.removeEventListener("touchstart", clickOutsideListener);
+      document.body.removeEventListener("keydown", escapeKeyPressListener);
 
-      document.body.removeEventListener('mousedown', clickOutsideListener);
-      document.body.removeEventListener('touchstart', clickOutsideListener);
-      document.body.removeEventListener('keydown', escapeKeyPressListener);
+      unlockBody();
 
-      document.body.style.overflow = overflow;
-
-      window.requestAnimationFrame(() => {
-        if (activeElement) {
-          activeElement.focus();
-        }
+      restoreFocusFrame.current = window.requestAnimationFrame(() => {
+        restoreFocusFrame.current = null;
+        if (activeElement) activeElement.focus();
       });
     };
-  }, [id, isOpen, autoFocus]);
+  }, [id, isOpen, autoFocus, onClickOutside, onEscapeKeyPress]);
+
+  React.useEffect(
+    () => () => {
+      if (restoreFocusFrame.current !== null) {
+        window.cancelAnimationFrame(restoreFocusFrame.current);
+      }
+    },
+    [],
+  );
 
   return React.useMemo(
     () => ({
       createPortal: (children) =>
-        portalRef.current
-          ? ReactDOM.createPortal(children, portalRef.current)
-          : null,
+        portalRef.current ? createReactPortal(children, portalRef.current) : null,
       modalProps: {
         id,
-        role: 'dialog',
+        role: "dialog",
         tabIndex: -1,
-        'aria-labelledby': labelId,
-        'aria-modal': true,
+        "aria-labelledby": labelId,
+        "aria-modal": true,
       },
       titleProps: {
         id: labelId,
-        role: 'heading',
+        role: "heading",
         tabIndex: -1,
       },
     }),
