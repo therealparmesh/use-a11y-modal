@@ -1,6 +1,6 @@
 {
   "name": "use-a11y-modal",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Small, accessible React modal hook with focus and inert background management.",
   "license": "MIT",
   "author": "Parmesh Krishen",

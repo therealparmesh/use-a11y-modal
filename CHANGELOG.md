@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/therealparmesh/use-a11y-modal/compare/v0.7.0...v0.7.1) (2026-07-11)
+
+### Bug Fixes
+
+- remove side effects metadata ([b40268d](https://github.com/therealparmesh/use-a11y-modal/commit/b40268d6c66f020dd982173bf6c3baac59f104fc))
+
 ## [0.7.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.6.3...v0.7.0) (2026-07-11)
 
 ### ⚠ BREAKING CHANGES
