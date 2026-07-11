@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/therealparmesh/use-a11y-modal/compare/v0.6.3...v0.7.0) (2026-07-11)
+
+### ⚠ BREAKING CHANGES
+
+- the package is now ESM only and requires native inert support.
+
+### Bug Fixes
+
+- harden modal behavior and declarations ([d2544ba](https://github.com/therealparmesh/use-a11y-modal/commit/d2544baa93fa3443b3f4dbead14a1c7695b17510))
+
+- migrate package tooling to Bun ([449c8e4](https://github.com/therealparmesh/use-a11y-modal/commit/449c8e4fc524f0acb07726e2597d2d3a2294b2af))
+
 ### [0.6.3](https://github.com/therealparmesh/use-a11y-modal/compare/v0.6.2...v0.6.3) (2021-11-24)
 
 ### [0.6.2](https://github.com/therealparmesh/use-a11y-modal/compare/v0.6.1...v0.6.2) (2021-11-24)
